@@ -4,7 +4,6 @@
 #include "../animation/AnimationValue.h"
 #include "../math/Curve.h"
 #include "../animation/Animation.h"
-#include "../script/ScriptTarget.h"
 
 namespace gplay
 {
@@ -15,17 +14,10 @@ class AnimationValue;
 /**
  * Defines the runtime session of an Animation to be played.
  */
-class AnimationClip : public Ref, public ScriptTarget
+class AnimationClip : public Ref
 {
     friend class AnimationController;
     friend class Animation;
-
-    GP_SCRIPT_EVENTS_START();
-    GP_SCRIPT_EVENT(clipBegin, "<AnimationClip>");
-    GP_SCRIPT_EVENT(clipEnd, "<AnimationClip>");
-    GP_SCRIPT_EVENT(clipUpdate, "<AnimationClip>f");
-    GP_SCRIPT_EVENTS_END();
-
 public:
 
     /**

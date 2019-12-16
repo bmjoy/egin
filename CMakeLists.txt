@@ -1,29 +1,24 @@
 cmake_minimum_required(VERSION 3.1)
-project(GPlayEngine)
+project(egin)
 
-include(global.cmake)
+set(CMAKE_CXX_STANDARD 11)
+include("egin.cmake")
+include_egin()
 
-# set global settings
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set(CMAKE_DEBUG_POSTFIX "")
+file(GLOB EGIN_SRC
+  ${EGIN_DIR}/src/ai/*.cpp
+  ${EGIN_DIR}/src/animation/*.cpp
+  ${EGIN_DIR}/src/audio/*.cpp
+  ${EGIN_DIR}/src/core/*.cpp
+  ${EGIN_DIR}/src/events/*.cpp
+  ${EGIN_DIR}/src/graphics/*.cpp
+  ${EGIN_DIR}/src/input/*.cpp
+  ${EGIN_DIR}/src/math/*.cpp
+  ${EGIN_DIR}/src/physics/*.cpp
+  ${EGIN_DIR}/src/renderer/*.cpp
+  ${EGIN_DIR}/src/sparkparticles/*.cpp
+  ${EGIN_DIR}/src/ui/*.cpp
+  ${EGIN_DIR}/src/editor/*.cpp
+)
 
-# set output directories
-set(OUT_DIR_BIN ${CMAKE_SOURCE_DIR}/output/bin)
-set(OUT_DIR_LIB ${CMAKE_SOURCE_DIR}/output/lib)
-set(OUT_DIR_INCLUDE ${CMAKE_SOURCE_DIR}/output/include)
-
-# set cmake output directories
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUT_DIR_LIB})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUT_DIR_BIN})
-if(WINDOWS)
-	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
-	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-endif()
-
-
-add_subdirectory(src)
-add_subdirectory(samples)
-
-
+add_library(egin STATIC ${EGIN_SRC})

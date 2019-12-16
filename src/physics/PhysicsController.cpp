@@ -33,7 +33,6 @@ PhysicsController::PhysicsController()
     _debugDrawer(NULL), _status(PhysicsController::Listener::DEACTIVATED), _listeners(NULL),
     _gravity(btScalar(0.0), btScalar(-9.8), btScalar(0.0)), _collisionCallback(NULL)
 {
-    GP_REGISTER_SCRIPT_EVENTS();
 
     // Default gravity is 9.8 along the negative Y axis.
     _collisionCallback = new CollisionCallback(this);
@@ -489,7 +488,7 @@ void PhysicsController::update(float elapsedTime)
     _world->stepSimulation(elapsedTime * 0.001f, 10);
 
     // If we have status listeners, then check if our status has changed.
-    if (_listeners || hasScriptListener(GP_GET_SCRIPT_EVENT(PhysicsController, statusEvent)))
+    if (_listeners)
     {
         Listener::EventType oldStatus = _status;
 
@@ -534,7 +533,6 @@ void PhysicsController::update(float elapsedTime)
                 }
             }
 
-            fireScriptEvent<void>(GP_GET_SCRIPT_EVENT(PhysicsController, statusEvent), _status);
         }
     }
 

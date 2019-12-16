@@ -1,4 +1,5 @@
 #include "../core/Base.h"
+#include "../core/Game.h"
 #include "../graphics/Text.h"
 #include "../math/Matrix.h"
 #include "../graphics/Scene.h"
@@ -232,7 +233,7 @@ Drawable* Text::clone(NodeCloneContext& context)
 unsigned int Text::draw()
 {
     // Apply scene camera projection and translation offsets
-    Rectangle viewport = Game::getInstance()->getViewport();
+    Rectangle viewport = gplay::Game::getInstance()->getViewport();
     Vector3 position = Vector3::zero();
     
     // Font is always using a offset projection matrix to top-left. So we need to adjust it back to cartesian

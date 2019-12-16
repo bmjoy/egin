@@ -3,7 +3,6 @@
 
 #include "../graphics/Node.h"
 #include "../graphics/MeshBatch.h"
-#include "../script/ScriptController.h"
 #include "../graphics/Light.h"
 #include "../graphics/Model.h"
 

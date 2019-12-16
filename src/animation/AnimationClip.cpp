@@ -4,7 +4,6 @@
 #include "../animation/AnimationTarget.h"
 #include "../core/Game.h"
 #include "../math/Quaternion.h"
-#include "../script/ScriptController.h"
 
 namespace gplay
 {
@@ -17,7 +16,6 @@ AnimationClip::AnimationClip(const char* id, Animation* animation, unsigned long
       _elapsedTime(0), _crossFadeToClip(NULL), _crossFadeOutElapsed(0), _crossFadeOutDuration(0), _blendWeight(1.0f),
       _beginListeners(NULL), _endListeners(NULL), _listeners(NULL), _listenerItr(NULL)
 {
-    GP_REGISTER_SCRIPT_EVENTS();
 
     GP_ASSERT(_animation);
     GP_ASSERT(0 <= startTime && startTime <= _animation->_duration && 0 <= endTime && endTime <= _animation->_duration);
@@ -489,9 +487,6 @@ bool AnimationClip::update(float elapsedTime)
         }
     }
 
-    // Fire script update event
-    fireScriptEvent<void>(GP_GET_SCRIPT_EVENT(AnimationClip, clipUpdate), this, _elapsedTime);
-
     // Add back in start time, and divide by the total animation's duration to get the actual percentage complete
     GP_ASSERT(_animation);
 
@@ -619,8 +614,6 @@ void AnimationClip::onBegin()
         }
     }
 
-    // Fire script begin event
-    fireScriptEvent<void>(GP_GET_SCRIPT_EVENT(AnimationClip, clipBegin), this);
 
     this->release();
 }
@@ -644,8 +637,6 @@ void AnimationClip::onEnd()
         }
     }
 
-    // Fire script end event
-    fireScriptEvent<void>(GP_GET_SCRIPT_EVENT(AnimationClip, clipEnd), this);
 
     this->release();
 }

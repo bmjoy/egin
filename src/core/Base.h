@@ -215,7 +215,7 @@ extern int strcmpnocase(const char* s1, const char* s2);
 
 // Scripting
 using std::va_list;
-#include <lua/lua.hpp>
+//#include <lua.hpp>
 
 // Graphics (BGFX)
 #include <bgfx/bgfx.h>

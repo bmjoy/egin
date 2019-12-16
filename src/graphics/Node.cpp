@@ -28,7 +28,6 @@ Node::Node(const char* id)
     _drawable(NULL), _camera(NULL), _light(NULL), _audioSource(NULL), _collisionObject(NULL), _agent(NULL), _userObject(NULL),
       _dirtyBits(NODE_DIRTY_ALL)
 {
-    GP_REGISTER_SCRIPT_EVENTS();
     if (id)
     {
         _id = id;
@@ -425,7 +424,8 @@ void Node::update(float elapsedTime)
             node->update(elapsedTime);
         }
     }
-    fireScriptEvent<void>(GP_GET_SCRIPT_EVENT(Node, update), dynamic_cast<void*>(this), elapsedTime);
+
+    this->onUpdate(elapsedTime);
 }
 
 bool Node::isStatic() const

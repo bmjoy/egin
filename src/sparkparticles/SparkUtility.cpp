@@ -2,7 +2,7 @@
 
 #include "../sparkparticles/SparkUtility.h"
 #include "../sparkparticles/SparkQuadRenderer.h"
-#include <spark/Core/IO/SPK_IO_Manager.h>
+#include <Core/IO/SPK_IO_Manager.h>
 
 #include "../math/Vector3.h"
 

@@ -10,7 +10,6 @@
 #include "../physics/PhysicsCollisionObject.h"
 #include "../graphics/MeshBatch.h"
 #include "../graphics/HeightField.h"
-#include "../script/ScriptTarget.h"
 
 namespace gplay
 {
@@ -22,7 +21,7 @@ class ScriptListener;
  *
  * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-Physics
  */
-class PhysicsController : public ScriptTarget
+class PhysicsController
 {
     friend class Game;
     friend class PhysicsConstraint;
@@ -31,10 +30,6 @@ class PhysicsController : public ScriptTarget
     friend class PhysicsVehicle;
     friend class PhysicsCollisionObject;
     friend class PhysicsGhostObject;
-
-    GP_SCRIPT_EVENTS_START();
-    GP_SCRIPT_EVENT(statusEvent, "[PhysicsController::Listener::EventType]");
-    GP_SCRIPT_EVENTS_END();
 
 public:
 

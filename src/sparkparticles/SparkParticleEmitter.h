@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <spark/SPARK.h>
+#include <SPARK.h>
 #include "../core/Base.h"
 #include "../core/Ref.h"
 #include "../graphics/Drawable.h"

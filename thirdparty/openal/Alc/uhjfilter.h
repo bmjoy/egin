@@ -3,12 +3,13 @@
 
 #include "AL/al.h"
 
-#include "alMain.h"
+#include "alcmain.h"
+#include "almalloc.h"
 
-typedef struct AllPassState {
-    ALfloat x[2]; /* Last two input samples */
-    ALfloat y[2]; /* Last two output samples */
-} AllPassState;
+
+struct AllPassState {
+    ALfloat z[2]{0.0f, 0.0f};
+};
 
 /* Encoding 2-channel UHJ from B-Format is done as:
  *
@@ -35,15 +36,19 @@ typedef struct AllPassState {
  * other inputs.
  */
 
-typedef struct Uhj2Encoder {
-    AllPassState Filter1_WX[4];
-    AllPassState Filter1_Y[4];
-    AllPassState Filter2_WX[4];
-} Uhj2Encoder;
+struct Uhj2Encoder {
+    AllPassState mFilter1_Y[4];
+    AllPassState mFilter2_WX[4];
+    AllPassState mFilter1_WX[4];
+    ALfloat mLastY{0.0f}, mLastWX{0.0f};
 
-/* Encodes a 2-channel UHJ (stereo-compatible) signal from a B-Format input
- * signal. The input must use FuMa channel ordering and scaling.
- */
-void EncodeUhj2(Uhj2Encoder *enc, ALfloat *restrict LeftOut, ALfloat *restrict RightOut, ALfloat (*restrict InSamples)[BUFFERSIZE], ALsizei SamplesToDo);
+    /* Encodes a 2-channel UHJ (stereo-compatible) signal from a B-Format input
+     * signal. The input must use FuMa channel ordering and scaling.
+     */
+    void encode(FloatBufferLine &LeftOut, FloatBufferLine &RightOut, FloatBufferLine *InSamples,
+        const size_t SamplesToDo);
+
+    DEF_NEWDEL(Uhj2Encoder)
+};
 
 #endif /* UHJFILTER_H */

@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include <spark/SPARK_Core.h>
-#include <spark/Core/SPK_Renderer.h>
+#include <SPARK_Core.h>
+#include <Core/SPK_Renderer.h>
 #include "../sparkparticles/SparkUtility.h"
 #include "../graphics/Material.h"
 

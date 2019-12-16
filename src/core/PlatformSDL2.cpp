@@ -77,17 +77,17 @@ extern void print(const char* format, ...)
 #ifndef GP_CUSTOM_PLATFORM
 
 // bgfx imgui
-#include <thirdparty/bgfxcommon/common.h>
-#include <thirdparty/bgfxcommon/imgui/bgfximgui.h>
+#include <bgfxcommon/common.h>
+#include <bgfxcommon/imgui/bgfximgui.h>
 entry::MouseState m_mouseState;
 
 
-#include <SDL2/SDL_config.h>
-#include <SDL2/SDL.h>
+#include <SDL_config.h>
+#include <SDL.h>
     #ifdef GP_PLATFORM_LINUX
 #define SDL_VIDEO_DRIVER_X11
 #endif
-#include <SDL2/SDL_syswm.h>
+#include <SDL_syswm.h>
 #include <bgfx/platform.h>
 
 #include "../renderer/Renderer.h"
@@ -813,7 +813,7 @@ int Platform::processEvents()
                 {
                     const SDL_KeyboardEvent& keyEvent = evt.key;
                     Keyboard::Key key = translateKey(keyEvent.keysym.scancode);
-                    gplay::Platform::keyEventInternal(gplay::Keyboard::KEY_PRESS, key);
+                    gplay::Platform::keyEventInternal(gplay::Keyboard::KEY_PRESS, keyEvent.keysym.scancode);
 
                     switch (key)
                     {
@@ -837,7 +837,7 @@ int Platform::processEvents()
                 {
                     const SDL_KeyboardEvent& keyEvent = evt.key;
                     Keyboard::Key key = translateKey(keyEvent.keysym.scancode);
-                    gplay::Platform::keyEventInternal(gplay::Keyboard::KEY_RELEASE, key);
+                    gplay::Platform::keyEventInternal(gplay::Keyboard::KEY_RELEASE, keyEvent.keysym.scancode);
                 }
             }
             break;

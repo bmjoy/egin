@@ -1,6 +1,6 @@
 #ifndef GP_NO_SPARK
 
-#include <spark/SPARK_Core.h>
+#include <SPARK_Core.h>
 #include "../sparkparticles/SparkQuadRenderer.h"
 #include "../graphics/MeshPart.h"
 #include "../graphics/Material.h"

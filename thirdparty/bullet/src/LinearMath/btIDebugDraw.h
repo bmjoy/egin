@@ -19,7 +19,7 @@ subject to the following restrictions:
 
 #include "btVector3.h"
 #include "btTransform.h"
-
+#pragma warning(disable: 4305)
 
 
 ///The btIDebugDraw interface class allows hooking up a debug renderer to visually debug simulations.

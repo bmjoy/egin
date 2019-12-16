@@ -1,7 +1,6 @@
 #ifndef PHYSICSCOLLISIONOBJECT_H_
 #define PHYSICSCOLLISIONOBJECT_H_
 
-#include "../script/Script.h"
 #include "../math/Vector3.h"
 #include "../physics/PhysicsCollisionShape.h"
 
@@ -265,47 +264,7 @@ public:
 
 protected:
 
-    /**
-     * Handles collision event callbacks to Lua script functions.
-     */
-    class ScriptListener : public CollisionListener
-    {
-    public:
-
-        /**
-         * Destructor.
-         */
-        ~ScriptListener();
-
-        /**
-         * Creates a ScriptListener for the given script function url.
-         *
-         * @param url The global script function, or script#function.
-         *
-         * @return The ScriptListener, or NULL if the function could not be loaded.
-         */
-        static ScriptListener* create(const char* url);
-
-        /**
-         * @see PhysicsCollisionObject::CollisionListener
-         */
-        void collisionEvent(PhysicsCollisionObject::CollisionListener::EventType type, const PhysicsCollisionObject::CollisionPair& collisionPair,
-                                    const Vector3& contactPointA, const Vector3& contactPointB);
-
-        /** The URL to the Lua script function to use as the callback. */
-        std::string url;
-        /** The loaded script that contains the function. */
-        Script* script;
-        /** The name of the Lua script function to use as the callback. */
-        std::string function;
-
-    private:
-
-        /**
-         * Constructor.
-         */
-        ScriptListener();
-    };
+    
 
     /**
      * Constructor.
@@ -333,11 +292,6 @@ protected:
      * If the collision object is enabled or not.
      */
     bool _enabled;
-
-    /**
-     * The list of script listeners.
-     */
-    std::vector<ScriptListener*>* _scriptListeners;
 
 private:
 

@@ -26,7 +26,6 @@ file(GLOB GPLAY_SRC
     ${PROJECT_SOURCE_DIR}/math/*.cpp
     ${PROJECT_SOURCE_DIR}/physics/*.cpp
     ${PROJECT_SOURCE_DIR}/renderer/*.cpp
-    ${PROJECT_SOURCE_DIR}/script/*.cpp
     ${PROJECT_SOURCE_DIR}/sparkparticles/*.cpp
     ${PROJECT_SOURCE_DIR}/ui/*.cpp
     ${PROJECT_SOURCE_DIR}/editor/*.cpp

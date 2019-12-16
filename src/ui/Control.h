@@ -9,7 +9,6 @@
 #include "../input/Touch.h"
 #include "../input/Keyboard.h"
 #include "../input/Mouse.h"
-#include "../script/ScriptTarget.h"
 #include "../input/Gamepad.h"
 
 namespace gplay
@@ -23,14 +22,10 @@ class Form;
  *
  * @see http://gameplay3d.github.io/GamePlay/docs/file-formats.html#wiki-UI_Forms
  */
-class Control : public Ref, public AnimationTarget, public ScriptTarget
+class Control : public Ref, public AnimationTarget
 {
     friend class Form;
     friend class Container;
-
-    GP_SCRIPT_EVENTS_START();
-    GP_SCRIPT_EVENT(controlEvent, "<Control>[Control::Listener::EventType]");
-    GP_SCRIPT_EVENTS_END();
 
 public:
 

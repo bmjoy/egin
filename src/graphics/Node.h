@@ -2,7 +2,6 @@
 #define NODE_H_
 
 #include "../math/Transform.h"
-#include "../script/ScriptTarget.h"
 #include "../graphics/Model.h"
 #include "../graphics/Sprite.h"
 #include "../graphics/TileSet.h"
@@ -41,14 +40,6 @@ class Node : public Transform, public Ref
     friend class Bundle;
     friend class MeshSkin;
     friend class Light;
-
-    GP_SCRIPT_EVENTS_START();
-    GP_SCRIPT_EVENT(update, "<Node>f");
-    GP_SCRIPT_EVENT(messageReceived, "<Node><AIMessage>");
-    GP_SCRIPT_EVENT(stateEnter, "<Node><AIState>");
-    GP_SCRIPT_EVENT(stateExit, "<Node><AIState>");
-    GP_SCRIPT_EVENT(stateUpdate, "<Node><AIState>f");
-    GP_SCRIPT_EVENTS_END();
 
 public:
 
@@ -257,6 +248,7 @@ public:
      * @param elapsedTime Elapsed time in milliseconds.
      */
     void update(float elapsedTime);
+    virtual void onUpdate(float elapsedTime) {};
 
     /**
      * Returns whether the transformation of this node is static.

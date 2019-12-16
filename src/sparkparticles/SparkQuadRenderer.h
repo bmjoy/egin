@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include <spark/Extensions/Renderers/SPK_QuadRenderBehavior.h>
-#include <spark/Extensions/Renderers/SPK_Oriented3DRenderBehavior.h>
+#include <Extensions/Renderers/SPK_QuadRenderBehavior.h>
+#include <Extensions/Renderers/SPK_Oriented3DRenderBehavior.h>
 #include "../sparkparticles/SparkUtility.h"
 #include "../sparkparticles/SparkBaseRenderer.h"
 

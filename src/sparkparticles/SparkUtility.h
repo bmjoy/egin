@@ -4,7 +4,7 @@
 
 #include "../math/Vector3.h"
 #include "../math/Vector4.h"
-#include <spark/SPARK_Core.h>
+#include <SPARK_Core.h>
 
 namespace SPK {
 

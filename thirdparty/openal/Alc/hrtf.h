@@ -1,52 +1,109 @@
 #ifndef ALC_HRTF_H
 #define ALC_HRTF_H
 
+#include <array>
+#include <cstddef>
+#include <memory>
+#include <string>
+
 #include "AL/al.h"
-#include "AL/alc.h"
 
-#include "alMain.h"
-#include "alstring.h"
+#include "almalloc.h"
+#include "alspan.h"
+#include "ambidefs.h"
 #include "atomic.h"
+#include "vector.h"
 
 
-/* The maximum number of virtual speakers used to generate HRTF coefficients
- * for decoding B-Format.
- */
-#define HRTF_AMBI_MAX_CHANNELS 16
+#define HRTF_HISTORY_BITS   (6)
+#define HRTF_HISTORY_LENGTH (1<<HRTF_HISTORY_BITS)
+#define HRTF_HISTORY_MASK   (HRTF_HISTORY_LENGTH-1)
+
+#define HRIR_BITS   (7)
+#define HRIR_LENGTH (1<<HRIR_BITS)
+#define HRIR_MASK   (HRIR_LENGTH-1)
+
+#define MIN_IR_LENGTH (8)
+
+using float2 = std::array<float,2>;
+using HrirArray = std::array<float2,HRIR_LENGTH>;
 
 
-struct HrtfEntry;
-
-struct Hrtf {
-    RefCount ref;
+struct HrtfStore {
+    RefCount mRef;
 
     ALuint sampleRate;
-    ALsizei irSize;
-    ALubyte evCount;
+    ALuint irSize;
 
-    const ALubyte *azCount;
-    const ALushort *evOffset;
-    const ALfloat (*coeffs)[2];
+    struct Field {
+        ALfloat distance;
+        ALubyte evCount;
+    };
+    /* NOTE: Fields are stored *backwards*. field[0] is the farthest field, and
+     * field[fdCount-1] is the nearest.
+     */
+    ALuint fdCount;
+    const Field *field;
+
+    struct Elevation {
+        ALushort azCount;
+        ALushort irOffset;
+    };
+    Elevation *elev;
+    const HrirArray *coeffs;
     const ALubyte (*delays)[2];
+
+    void IncRef();
+    void DecRef();
+
+    DEF_PLACE_NEWDEL()
 };
 
 
-void FreeHrtfs(void);
+struct HrtfState {
+    alignas(16) std::array<float,HRTF_HISTORY_LENGTH> History;
+};
 
-vector_EnumeratedHrtf EnumerateHrtf(const_al_string devname);
-void FreeHrtfList(vector_EnumeratedHrtf *list);
-struct Hrtf *GetLoadedHrtf(struct HrtfEntry *entry);
-void Hrtf_IncRef(struct Hrtf *hrtf);
-void Hrtf_DecRef(struct Hrtf *hrtf);
+struct HrtfFilter {
+    alignas(16) HrirArray Coeffs;
+    ALuint Delay[2];
+    float Gain;
+};
 
-void GetHrtfCoeffs(const struct Hrtf *Hrtf, ALfloat elevation, ALfloat azimuth, ALfloat spread, ALfloat (*coeffs)[2], ALsizei *delays);
+struct DirectHrtfState {
+    /* HRTF filter state for dry buffer content */
+    ALuint IrSize{0};
+    al::FlexArray<HrirArray,16> Coeffs;
+
+    DirectHrtfState(size_t numchans) : Coeffs{numchans} { }
+
+    static std::unique_ptr<DirectHrtfState> Create(size_t num_chans);
+
+    DEF_FAM_NEWDEL(DirectHrtfState, Coeffs)
+};
+
+struct EvRadians { float value; };
+struct AzRadians { float value; };
+struct AngularPoint {
+    EvRadians Elev;
+    AzRadians Azim;
+};
+
+
+al::vector<std::string> EnumerateHrtf(const char *devname);
+HrtfStore *GetLoadedHrtf(const std::string &name, const char *devname, const ALuint devrate);
+
+void GetHrtfCoeffs(const HrtfStore *Hrtf, float elevation, float azimuth, float distance,
+    float spread, HrirArray &coeffs, ALuint (&delays)[2]);
 
 /**
  * Produces HRTF filter coefficients for decoding B-Format, given a set of
- * virtual speaker positions and HF/LF matrices for decoding to them. The
- * returned coefficients are ordered and scaled according to the matrices.
- * Returns the maximum impulse-response length of the generated coefficients.
+ * virtual speaker positions, a matching decoding matrix, and per-order high-
+ * frequency gains for the decoder. The calculated impulse responses are
+ * ordered and scaled according to the matrix input.
  */
-ALsizei BuildBFormatHrtf(const struct Hrtf *Hrtf, DirectHrtfState *state, ALsizei NumChannels, const ALfloat (*restrict AmbiPoints)[2], const ALfloat (*restrict AmbiMatrix)[2][MAX_AMBI_COEFFS], ALsizei AmbiCount);
+void BuildBFormatHrtf(const HrtfStore *Hrtf, DirectHrtfState *state,
+    const al::span<const AngularPoint> AmbiPoints, const ALfloat (*AmbiMatrix)[MAX_AMBI_CHANNELS],
+    const ALfloat *AmbiOrderHFGain);
 
 #endif /* ALC_HRTF_H */

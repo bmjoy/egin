@@ -15,7 +15,8 @@
 #include "../math/Vector4.h"
 #include "../core/TimeListener.h"
 #include "../events/EventManager.h"
-#include "../editor/InGameEditor.h"
+
+class Input;
 
 namespace gplay
 {
@@ -628,12 +629,6 @@ public:
      */
     bool launchURL(const char *url) const;
 
-    /**
-     * Show in game editor
-     * @param scene the current scene, if null editor will not be processed
-     */
-    void showEditor(Scene* scene);
-
 protected:
 
     /**
@@ -768,7 +763,7 @@ private:
     unsigned int _frameCount;                   // The current frame count.
     unsigned int _frameRate;                    // The current frame rate.
     unsigned int _width;                        // The game's display width.
-    unsigned int _height;                       // The game's display height.
+    unsigned int _height;                       // The game's display hseight.
     Rectangle _viewport;                        // the games's current viewport.
     Vector4 _clearColor;                        // The clear color value last used for clearing the color buffer.
     float _clearDepth;                          // The clear depth value last used for clearing the depth buffer.
@@ -780,10 +775,8 @@ private:
     AIController* _aiController;                // Controls AI simulation.
     AudioListener* _audioListener;              // The audio listener in 3D space.
     std::priority_queue<TimeEvent, std::vector<TimeEvent>, std::less<TimeEvent> >* _timeEvents;     // Contains the scheduled time events.
-    ScriptController* _scriptController;        // Controls the scripting engine.
-    ScriptTarget* _scriptTarget;                // Script target for the game
     EventManagerRef _eventManager;              // Event manager
-    InGameEditor* _inGameEditor;                // ImGui based scene editor
+
 
     // Note: Do not add STL object member variables on the stack; this will cause false memory leaks to be reported.
 

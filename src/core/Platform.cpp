@@ -2,7 +2,6 @@
 #include "../core/Base.h"
 #include "../core/Platform.h"
 #include "../core/Game.h"
-#include "../script/ScriptController.h"
 #include "../ui/Form.h"
 
 namespace gplay

@@ -54,10 +54,7 @@ inline PhysicsController* Game::getPhysicsController() const
     return _physicsController;
 }
 
-inline ScriptController* Game::getScriptController() const
-{
-    return _scriptController;
-}
+
 inline AIController* Game::getAIController() const
 {
     return _aiController;

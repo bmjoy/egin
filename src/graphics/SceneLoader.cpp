@@ -437,9 +437,6 @@ void SceneLoader::applyNodeProperty(SceneNode& sceneNode, Node* node, const Prop
                 node->scale(s);
             break;
         }
-        case SceneNodeProperty::SCRIPT:
-            node->addScript(snp._value.c_str());
-            break;
         case SceneNodeProperty::ENABLED:
             node->setEnabled(snp._value.compare("true") == 0);
             break;

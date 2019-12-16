@@ -197,13 +197,6 @@ unsigned int Scene::findNodes(const char* id, std::vector<Node*>& nodes, bool re
 
 void Scene::visitNode(Node* node, const char* visitMethod)
 {
-    ScriptController* sc = Game::getInstance()->getScriptController();
-
-    // Invoke the visit method for this node.
-    bool result;
-    if (!sc->executeFunction<bool>(visitMethod, "<Node>", &result, (void*)node) || !result)
-        return;
-
     // If this node has a model with a mesh skin, visit the joint hierarchy within it
     // since we don't add joint hierarcies directly to the scene. If joints are never
     // visited, it's possible that nodes embedded within the joint hierarchy that contain

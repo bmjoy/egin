@@ -1,7 +1,6 @@
 #ifndef TRANSFORM_H_
 #define TRANSFORM_H_
 
-#include "../script/ScriptTarget.h"
 #include "../math/Vector3.h"
 #include "../math/Quaternion.h"
 #include "../math/Matrix.h"
@@ -28,12 +27,8 @@ class ScriptListener;
  * components using matrix.decompose(Vector3, Quaternion, Vector3) and then pass
  * those arguments to the appropriate constructor or set methods of Transform.
  */
-class Transform : public AnimationTarget, public ScriptTarget
+class Transform : public AnimationTarget
 {
-    GP_SCRIPT_EVENTS_START();
-    GP_SCRIPT_EVENT(transformChanged, "<Transform>");
-    GP_SCRIPT_EVENTS_END();
-
 public:
 
     /**

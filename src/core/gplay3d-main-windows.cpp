@@ -13,7 +13,7 @@ using namespace gplay;
 extern int __app_argc;
 extern char** __app_argv;
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #undef main
 #define main SDL_main
 
