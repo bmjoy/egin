@@ -20,6 +20,7 @@ function(include_egin)
     ${EGIN_DIR}/thirdparty/spark/spark/include
     ${EGIN_DIR}/thirdparty/bgfx-cmake/bgfx/3rdparty
     ${EGIN_DIR}/thirdparty/imgui
+    ${EGIN_DIR}/thirdparty/glm
   )
 
   if(WINDOWS)

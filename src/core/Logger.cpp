@@ -1,100 +1,47 @@
+#include <iostream>
+#include <stdarg.h>
+#include <vector>
+#include "Logger.hpp"
 
-#include "../core/Base.h"
-#include "../core/Game.h"
+using namespace core;
 
-namespace gplay
+Logger core::logger;
+
+std::string format(const char *fmt, va_list args)
 {
-
-Logger::State Logger::_state[3];
-
-Logger::State::State() : logFunctionC(NULL), logFunctionLua(NULL), enabled(true)
-{
-}
-
-Logger::Logger()
-{
-}
-
-Logger::~Logger()
-{
-}
-
-void Logger::log(Level level, const char* message, ...)
-{
-    State& state = _state[level];
-    if (!state.enabled)
-        return;
-
-    // Declare a moderately sized buffer on the stack that should be
-    // large enough to accommodate most log requests.
-    int size = 1024;
-    char stackBuffer[1024];
-    std::vector<char> dynamicBuffer;
-    char* str = stackBuffer;
-    for ( ; ; )
+    std::vector<char> v(1024);
+    while (true)
     {
-        va_list args;
-        va_start(args, message);
-
-        // Pass one less than size to leave room for NULL terminator
-        int needed = vsnprintf(str, size-1, message, args);
-
-        // NOTE: Some platforms return -1 when vsnprintf runs out of room, while others return
-        // the number of characters actually needed to fill the buffer.
-        if (needed >= 0 && needed < size)
+        va_list args2;
+        va_copy(args2, args);
+        int res = vsnprintf(v.data(), v.size(), fmt, args2);
+        if ((res >= 0) && (res < static_cast<int>(v.size())))
         {
-            // Successfully wrote buffer. Added a NULL terminator in case it wasn't written.
-            str[needed] = '\0';
             va_end(args);
-            break;
+            va_end(args2);
+            return std::string(v.data());
         }
-
-        size = needed > 0 ? (needed + 1) : (size * 2);
-        dynamicBuffer.resize(size);
-        str = &dynamicBuffer[0];
-
-        va_end(args);
-    }
-
-    if (state.logFunctionC)
-    {
-        // Pass call to registered C log function
-        (*state.logFunctionC)(level, str);
-    }
-    else if (state.logFunctionLua)
-    {
-        // Pass call to registered Lua log function
-        // Game::getInstance()->getScriptController()->executeFunction<void>(state.logFunctionLua, "[Logger::Level]s", NULL, level, str);
-    }
-    else
-    {
-        // Log to the default output
-        gplay::print("%s", str);
+        size_t size;
+        if (res < 0)
+            size = v.size() * 2;
+        else
+            size = static_cast<size_t>(res) + 1;
+        v.clear();
+        v.resize(size);
+        va_end(args2);
     }
 }
 
-bool Logger::isEnabled(Level level)
-{
-    return _state[level].enabled;
+Logger::Logger() {
+
 }
 
-void Logger::setEnabled(Level level, bool enabled)
-{
-    _state[level].enabled = enabled;
+void Logger::log(const char* message, ...) {
+  va_list args;
+  va_start(args, message);
+  std::cout << "[LOG] " << format(message, args) << std::endl;
 }
 
-void Logger::set(Level level, void (*logFunction) (Level, const char*))
-{
-    State& state = _state[level];
-    state.logFunctionC = logFunction;
-    state.logFunctionLua = NULL;
-}
-
-void Logger::set(Level level, const char* logFunction)
-{
-    State& state = _state[level];
-    state.logFunctionLua = logFunction;
-    state.logFunctionC = NULL;
-}
+Logger::~Logger() {
 
 }
